@@ -12,15 +12,15 @@ class FontsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         let styles: [String : UIFont.Weight] = [
-            "black" : .black,
-            "bold" : .bold,
-            "heavy" : .heavy,
-            "light" : .light,
-            "medium" : .medium,
-            "regular" : .regular,
-            "semibold" : .semibold,
-            "thin" : .thin,
-            "ultraLight" : .ultraLight,
+            "просто текст black" : .black,
+            "просто текст bold" : .bold,
+            "просто текст heavy" : .heavy,
+            "просто текст light" : .light,
+            "просто текст medium" : .medium,
+            "просто текст regular" : .regular,
+            "просто текст semibold" : .semibold,
+            "просто текст thin" : .thin,
+            "просто текст ultraLight" : .ultraLight,
         ]
         
         var counter = 0

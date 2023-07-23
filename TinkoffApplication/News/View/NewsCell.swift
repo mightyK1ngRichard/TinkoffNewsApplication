@@ -86,12 +86,13 @@ private extension NewsCell {
     func setup() {
         setupGradient()
         [containerView, titleLabel, imageArticle, viewCounter, eyeImage].forEach { addSubview($0) }
+        
         NSLayoutConstraint.activate([
-            containerView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 4),
+            containerView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
             containerView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
             containerView.topAnchor.constraint(equalTo: topAnchor, constant: 8),
             containerView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8),
-            
+    
             titleLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 12),
             titleLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 12),
             titleLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -8),

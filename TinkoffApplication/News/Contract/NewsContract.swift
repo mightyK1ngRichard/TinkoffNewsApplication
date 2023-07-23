@@ -17,6 +17,7 @@ protocol NewsPresenterInput {
 /// View interface.
 protocol NewsViewControllerInput: AnyObject {
     func configure(_ viewModel: NewsViewModel)
+    func showErrorView(text: String) 
 }
 
 /// Interface of all data-related managing object. Network interaction, database fetching etc.

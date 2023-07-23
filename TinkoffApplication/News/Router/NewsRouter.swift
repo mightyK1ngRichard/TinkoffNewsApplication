@@ -19,6 +19,4 @@ extension NewsRouter: NewsRouterInput {
         let vc = NewsDetailViewController(data, presenter: presenter)
         viewController?.navigationController?.pushViewController(vc, animated: true)
     }
-    
-    
 }

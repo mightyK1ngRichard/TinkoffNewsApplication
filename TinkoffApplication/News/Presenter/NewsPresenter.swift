@@ -39,6 +39,7 @@ final class NewsPresenter {
 extension NewsPresenter: NewsPresenterInput {
     func viewDidFinishLaunching() {
         /* Два возможных способа */
+        
         //fetchData()
         fetchDataAsync()
     }
@@ -87,7 +88,17 @@ private extension NewsPresenter {
                     }))
                 }
                 
+            } catch URLError.notConnectedToInternet {
+                guard let view = view else { return }
+                DispatchQueue.main.async {
+                    view.showErrorView(text: "Из-за проблем с сетью ничего не нашлось, обновите страницу")
+                }
+                
             } catch {
+                guard let view = view else { return }
+                DispatchQueue.main.async {
+                    view.showErrorView(text: error.localizedDescription)
+                }
                 print(error.localizedDescription)
             }
         }

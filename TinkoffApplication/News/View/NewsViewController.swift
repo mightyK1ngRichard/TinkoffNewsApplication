@@ -13,7 +13,7 @@ final class NewsViewController: UIViewController {
     // MARK: Dependencies
 
     private let presenter: NewsPresenterInput
-
+    
     // MARK: Subviews
 
     private let tableView: UITableView = {
@@ -25,6 +25,7 @@ final class NewsViewController: UIViewController {
         table.register(NewsCell.self, forCellReuseIdentifier: NewsCell.cellID)
         return table
     }()
+    private var errorView: ErrorView?
     
     // MARK: Properties
 
@@ -73,10 +74,28 @@ private extension NewsViewController {
 extension NewsViewController: NewsViewControllerInput {
 
     func configure(_ viewModel: NewsViewModel) {
+        tableView.isHidden = false
+        if let errorView = errorView {
+            errorView.isHidden = true
+        }
+        
         self.viewModel = viewModel
         tableView.reloadData()
     }
-
+    
+    func showErrorView(text: String) {
+        tableView.isHidden = true
+        errorView = ErrorView(text)
+        guard let errorView = errorView else { return }
+        errorView.delegate = self
+        errorView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(errorView)
+        NSLayoutConstraint.activate([
+            errorView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
+            errorView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8),
+            errorView.topAnchor.constraint(equalTo: view.topAnchor, constant: 8),
+        ])
+    }
 }
 
 // MARK: - UITableViewDataSource
@@ -104,29 +123,36 @@ extension NewsViewController: UITableViewDelegate {
     }
 }
 
+// MARK: - ErrorViewDelegate
+extension NewsViewController: AnyErrorView {
+    func didPressedUpdateButton() {
+        print("TAP")
+    }
+}
+
 // MARK: - Preview:
 
 import SwiftUI
 struct PreviewNewsViewController: PreviewProvider {
-    /// Менять для других привью.
-    typealias CurrentPreview = PreviewNewsViewController.ContainerView
-    
-    static var previews: some View {
-        ContainerView()
-            .ignoresSafeArea()
-//            .preferredColorScheme(.dark)
-    }
-    
-    struct ContainerView: UIViewControllerRepresentable {
-        typealias PreviewContext = UIViewControllerRepresentableContext<CurrentPreview>
+/// Менять для других привью.
+typealias CurrentPreview = PreviewNewsViewController.ContainerView
 
-        func makeUIViewController(context: PreviewContext) -> some UIViewController {
-            return NewsComposer.make()
-        }
-        
-        func updateUIViewController(
-            _ uiViewController: CurrentPreview.UIViewControllerType,
-            context: PreviewContext) {
-        }
+static var previews: some View {
+    ContainerView()
+        .ignoresSafeArea()
+//            .preferredColorScheme(.dark)
+}
+
+struct ContainerView: UIViewControllerRepresentable {
+    typealias PreviewContext = UIViewControllerRepresentableContext<CurrentPreview>
+
+    func makeUIViewController(context: PreviewContext) -> some UIViewController {
+        return NewsComposer.make()
     }
+    
+    func updateUIViewController(
+        _ uiViewController: CurrentPreview.UIViewControllerType,
+        context: PreviewContext) {
+    }
+}
 }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2C8041152A6C765200FAB661 /* ErrorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8041142A6C765200FAB661 /* ErrorViewController.swift */; };
 		2C868D7D2A6B36AE00CE8FC0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C868D7C2A6B36AE00CE8FC0 /* AppDelegate.swift */; };
 		2C868D7F2A6B36AE00CE8FC0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C868D7E2A6B36AE00CE8FC0 /* SceneDelegate.swift */; };
 		2C868D862A6B36B000CE8FC0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2C868D852A6B36B000CE8FC0 /* Assets.xcassets */; };
@@ -30,6 +31,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2C8041142A6C765200FAB661 /* ErrorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorViewController.swift; sourceTree = "<group>"; };
 		2C868D792A6B36AE00CE8FC0 /* TinkoffApplication.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TinkoffApplication.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C868D7C2A6B36AE00CE8FC0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2C868D7E2A6B36AE00CE8FC0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -157,6 +159,7 @@
 				2C868DB62A6B61EF00CE8FC0 /* NewsDetailViewController.swift */,
 				2C868DB12A6B3BC800CE8FC0 /* NewsCell.swift */,
 				2CF8C01C2A6BE18000968703 /* FontsViewController.swift */,
+				2C8041142A6C765200FAB661 /* ErrorViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -284,6 +287,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2C868D7D2A6B36AE00CE8FC0 /* AppDelegate.swift in Sources */,
+				2C8041152A6C765200FAB661 /* ErrorViewController.swift in Sources */,
 				2C868DA42A6B385600CE8FC0 /* NewsRouter.swift in Sources */,
 				2C868DA32A6B385600CE8FC0 /* NewsContract.swift in Sources */,
 				2C868DA62A6B385600CE8FC0 /* NewsViewController.swift in Sources */,
