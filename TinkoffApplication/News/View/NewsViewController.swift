@@ -75,10 +75,6 @@ extension NewsViewController: NewsViewControllerInput {
 
     func configure(_ viewModel: NewsViewModel) {
         tableView.isHidden = false
-        if let errorView = errorView {
-            errorView.isHidden = true
-        }
-        
         self.viewModel = viewModel
         tableView.reloadData()
     }
@@ -94,6 +90,7 @@ extension NewsViewController: NewsViewControllerInput {
             errorView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
             errorView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8),
             errorView.topAnchor.constraint(equalTo: view.topAnchor, constant: 8),
+            errorView.heightAnchor.constraint(equalToConstant: 400)
         ])
     }
 }
@@ -126,7 +123,10 @@ extension NewsViewController: UITableViewDelegate {
 // MARK: - ErrorViewDelegate
 extension NewsViewController: AnyErrorView {
     func didPressedUpdateButton() {
-        print("TAP")
+        if let errorView = errorView {
+            errorView.isHidden = true
+            presenter.viewDidFinishLaunching()
+        }
     }
 }
 

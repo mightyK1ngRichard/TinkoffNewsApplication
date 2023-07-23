@@ -14,6 +14,7 @@ protocol AnyErrorView: AnyObject {
 final class ErrorView: UIView {
     
     // MARK: Dependencies
+    
     weak var delegate: AnyErrorView?
     private var textError: String
     
@@ -57,7 +58,6 @@ final class ErrorView: UIView {
         btn.setTitle("Обновить", for: .normal)
         btn.tintColor = .white
         btn.layer.cornerRadius = 10
-        btn.addTarget(ErrorView.self, action: #selector(pressedTryAgainButton), for: .touchUpInside)
         return btn
     }()
     
@@ -75,12 +75,15 @@ final class ErrorView: UIView {
   
 }
 
-private extension ErrorView {
+// MARK: - Setup.
+
+extension ErrorView {
     func setup() {
         errorLabel.text = textError
         addSubview(errorView)
         [img, errorLabel, replyAgainLabel, tryAgainButton].forEach { errorView.addSubview($0) }
-    
+        tryAgainButton.addTarget(self, action: #selector(pressedTryAgainButton), for: .touchUpInside)
+        
         NSLayoutConstraint.activate([
             errorView.centerXAnchor.constraint(equalTo: centerXAnchor),
             errorView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 16),
@@ -106,7 +109,7 @@ private extension ErrorView {
         ])
     }
 
-    @objc func pressedTryAgainButton(sender: UIButton!) {
+    @objc func pressedTryAgainButton() {
         guard let delegate = delegate else { return }
         delegate.didPressedUpdateButton()
     }

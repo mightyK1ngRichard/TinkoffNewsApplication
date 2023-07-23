@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2C8041152A6C765200FAB661 /* ErrorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8041142A6C765200FAB661 /* ErrorViewController.swift */; };
+		2C8041152A6C765200FAB661 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8041142A6C765200FAB661 /* ErrorView.swift */; };
 		2C868D7D2A6B36AE00CE8FC0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C868D7C2A6B36AE00CE8FC0 /* AppDelegate.swift */; };
 		2C868D7F2A6B36AE00CE8FC0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C868D7E2A6B36AE00CE8FC0 /* SceneDelegate.swift */; };
 		2C868D862A6B36B000CE8FC0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2C868D852A6B36B000CE8FC0 /* Assets.xcassets */; };
@@ -31,7 +31,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		2C8041142A6C765200FAB661 /* ErrorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorViewController.swift; sourceTree = "<group>"; };
+		2C8041142A6C765200FAB661 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 		2C868D792A6B36AE00CE8FC0 /* TinkoffApplication.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TinkoffApplication.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C868D7C2A6B36AE00CE8FC0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2C868D7E2A6B36AE00CE8FC0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -87,7 +87,7 @@
 			isa = PBXGroup;
 			children = (
 				2CF8C0202A6BF20E00968703 /* Utils */,
-				2C868DAB2A6B393A00CE8FC0 /* Network */,
+				2C868DAB2A6B393A00CE8FC0 /* Services */,
 				2C868D912A6B377900CE8FC0 /* Resources */,
 				2C868D902A6B36F400CE8FC0 /* Application */,
 				2C868D922A6B380D00CE8FC0 /* News */,
@@ -155,11 +155,10 @@
 			isa = PBXGroup;
 			children = (
 				2C868DB32A6B3CA400CE8FC0 /* Models */,
+				2CB57E1B2A6D943D00DBD0CA /* Components */,
 				2C868D9C2A6B385600CE8FC0 /* NewsViewController.swift */,
 				2C868DB62A6B61EF00CE8FC0 /* NewsDetailViewController.swift */,
-				2C868DB12A6B3BC800CE8FC0 /* NewsCell.swift */,
 				2CF8C01C2A6BE18000968703 /* FontsViewController.swift */,
-				2C8041142A6C765200FAB661 /* ErrorViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -181,21 +180,21 @@
 			path = Presenter;
 			sourceTree = "<group>";
 		};
-		2C868DAB2A6B393A00CE8FC0 /* Network */ = {
+		2C868DAB2A6B393A00CE8FC0 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				2C868DAE2A6B397C00CE8FC0 /* NewsService */,
+				2C868DAE2A6B397C00CE8FC0 /* NewsAPIService */,
 			);
-			path = Network;
+			path = Services;
 			sourceTree = "<group>";
 		};
-		2C868DAE2A6B397C00CE8FC0 /* NewsService */ = {
+		2C868DAE2A6B397C00CE8FC0 /* NewsAPIService */ = {
 			isa = PBXGroup;
 			children = (
 				2C868DAC2A6B395700CE8FC0 /* NewsService.swift */,
 				2C868DAF2A6B398E00CE8FC0 /* NewsModels.swift */,
 			);
-			path = NewsService;
+			path = NewsAPIService;
 			sourceTree = "<group>";
 		};
 		2C868DB32A6B3CA400CE8FC0 /* Models */ = {
@@ -206,6 +205,15 @@
 				2CF8C01E2A6BEF1500968703 /* NewsDetailModel.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		2CB57E1B2A6D943D00DBD0CA /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				2C8041142A6C765200FAB661 /* ErrorView.swift */,
+				2C868DB12A6B3BC800CE8FC0 /* NewsCell.swift */,
+			);
+			path = Components;
 			sourceTree = "<group>";
 		};
 		2CF8C0202A6BF20E00968703 /* Utils */ = {
@@ -287,7 +295,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2C868D7D2A6B36AE00CE8FC0 /* AppDelegate.swift in Sources */,
-				2C8041152A6C765200FAB661 /* ErrorViewController.swift in Sources */,
+				2C8041152A6C765200FAB661 /* ErrorView.swift in Sources */,
 				2C868DA42A6B385600CE8FC0 /* NewsRouter.swift in Sources */,
 				2C868DA32A6B385600CE8FC0 /* NewsContract.swift in Sources */,
 				2C868DA62A6B385600CE8FC0 /* NewsViewController.swift in Sources */,

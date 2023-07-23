@@ -17,8 +17,8 @@ class NewsService: AnyNewsService {
     private init() {}
     
     private let apiKey   = "5bb077a0181341b99bf6345c40f3b2d9"
-    private var dateFrom = "2023-07-21"
-    private var dateTo   = "2023-07-21"
+    private var dateFrom = "2023-07-22"
+    private var dateTo   = "2023-07-23"
     
     func getAppleNews(
         from dateFrom: String? = nil,
