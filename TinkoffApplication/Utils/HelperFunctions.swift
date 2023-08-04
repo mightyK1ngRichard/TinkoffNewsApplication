@@ -8,21 +8,28 @@
 import Foundation
 import UIKit
 
-public func uploadImageFromNetwork(image: URL?, completion: @escaping (UIImage?) -> Void) {
-    if let urlImage = image {
-        let request = URLRequest(url: urlImage)
-        URLSession.shared.dataTask(with: request) { data, _, error in
-            guard error == nil, let data = data else {
-                DispatchQueue.main.async {
-                    completion(nil)
-                }
-                return
-            }
+
+public func uploadImageFromNetwork(image: URL?, completion: @escaping (Result<UIImage, URLError>) -> Void) {
+    guard let url = image else {
+        completion(.failure(URLError(.badURL)))
+        return
+    }
+    DispatchQueue.global(qos: .utility).async {
+        do {
+            let data = try Data(contentsOf: url)
             DispatchQueue.main.async {
-                completion(UIImage(data: data))
+                if let uiimage = UIImage(data: data) {
+                    completion(.success(uiimage))
+                } else {
+                    completion(.failure(URLError(.cannotLoadFromNetwork)))
+                }
             }
             
-        }.resume()
+        } catch {
+            DispatchQueue.main.async {
+                completion(.failure(error as! URLError))
+            }
+        }
     }
 }
 

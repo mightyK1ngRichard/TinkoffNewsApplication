@@ -9,15 +9,15 @@
 import UIKit
 
 final class NewsViewController: UIViewController {
-
+    
     // MARK: Dependencies
-
+    
     private let presenter: NewsPresenterInput
     
     // MARK: Subviews
-
+    
     private let tableView: UITableView = {
-       let table = UITableView()
+        let table = UITableView()
         table.translatesAutoresizingMaskIntoConstraints = false
         table.separatorStyle = .none
         table.estimatedRowHeight = 200
@@ -28,23 +28,23 @@ final class NewsViewController: UIViewController {
     private var errorView: ErrorView?
     
     // MARK: Properties
-
+    
     private var viewModel = NewsViewModel()
-
+    
     // MARK: Init
-
+    
     init(presenter: NewsPresenterInput) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
     }
-
+    
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     // MARK: Lifecycle
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
@@ -57,9 +57,14 @@ final class NewsViewController: UIViewController {
 private extension NewsViewController {
     func setup() {
         self.title = "Новости"
+        self.navigationController?.navigationBar.prefersLargeTitles = true
+        let backButton = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        navigationItem.backBarButtonItem = backButton
+        
         view.addSubview(tableView)
         tableView.dataSource = self
         tableView.delegate = self
+        
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
@@ -72,7 +77,7 @@ private extension NewsViewController {
 // MARK: - NewsViewControllerInput
 
 extension NewsViewController: NewsViewControllerInput {
-
+    
     func configure(_ viewModel: NewsViewModel) {
         tableView.isHidden = false
         self.viewModel = viewModel
@@ -134,25 +139,23 @@ extension NewsViewController: AnyErrorView {
 
 import SwiftUI
 struct PreviewNewsViewController: PreviewProvider {
-/// Менять для других привью.
-typealias CurrentPreview = PreviewNewsViewController.ContainerView
-
-static var previews: some View {
-    ContainerView()
-        .ignoresSafeArea()
-//            .preferredColorScheme(.dark)
-}
-
-struct ContainerView: UIViewControllerRepresentable {
-    typealias PreviewContext = UIViewControllerRepresentableContext<CurrentPreview>
-
-    func makeUIViewController(context: PreviewContext) -> some UIViewController {
-        return NewsComposer.make()
+    /// Менять для других привью.
+    typealias CurrentPreview = PreviewNewsViewController.ContainerView
+    
+    static var previews: some View {
+        ContainerView()
+            .ignoresSafeArea()
     }
     
-    func updateUIViewController(
-        _ uiViewController: CurrentPreview.UIViewControllerType,
-        context: PreviewContext) {
+    struct ContainerView: UIViewControllerRepresentable {
+        typealias PreviewContext = UIViewControllerRepresentableContext<CurrentPreview>
+        
+        func makeUIViewController(context: PreviewContext) -> some UIViewController {
+            return NewsComposer.make()
+        }
+        
+        func updateUIViewController(
+            _ uiViewController: CurrentPreview.UIViewControllerType,
+            context: PreviewContext) {}
     }
-}
 }

@@ -69,15 +69,20 @@ final class NewsCell: UITableViewCell {
     func configure(with info: NewsCellModel) {
         self.titleLabel.text = info.title
         self.viewCounter.text = "Просмотров: \(info.viewCounter) шт."
-        uploadImageFromNetwork(image: info.image) { [weak self] img in
-            guard let self = self, let img = img else { return }
-            self.imageArticle.image = img
-            self.imageArticle.contentMode = .scaleAspectFill
-            self.imageArticle.layer.borderColor = UIColor.purple.cgColor
-            self.imageArticle.layer.borderWidth = 1
+        uploadImageFromNetwork(image: info.image) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let image):
+                self.imageArticle.image = image
+                self.imageArticle.contentMode = .scaleAspectFill
+                self.imageArticle.layer.borderColor = UIColor.purple.cgColor
+                self.imageArticle.layer.borderWidth = 1
+                
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
         }
     }
-    
     
 }
 

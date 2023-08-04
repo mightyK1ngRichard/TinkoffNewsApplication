@@ -10,7 +10,7 @@ import UIKit
 final class NewsDetailViewController: UIViewController {
     
     // MARK: Dependencies
-
+    
     private let presenter: NewsPresenterInput
     
     // MARK: Subviews
@@ -18,6 +18,7 @@ final class NewsDetailViewController: UIViewController {
     private let container: UIView = {
         let vw = UIView()
         vw.translatesAutoresizingMaskIntoConstraints = false
+        vw.layer.cornerRadius = 20
         return vw
     }()
     private let scrollView: UIScrollView = {
@@ -25,6 +26,7 @@ final class NewsDetailViewController: UIViewController {
         scroll.translatesAutoresizingMaskIntoConstraints = false
         scroll.alwaysBounceVertical = true
         scroll.alwaysBounceHorizontal = false
+        scroll.backgroundColor = .clear
         return scroll
     }()
     private let titleLabel: UILabel = {
@@ -83,6 +85,7 @@ final class NewsDetailViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -93,6 +96,7 @@ final class NewsDetailViewController: UIViewController {
         super.viewDidLoad()
         setup()
     }
+    
 }
 
 private extension NewsDetailViewController {
@@ -100,17 +104,32 @@ private extension NewsDetailViewController {
     // MARK: Setup
     
     func setup() {
-        view.backgroundColor = UITraitCollection.current.userInterfaceStyle == .light ? UIColor.white : UIColor.black
+        navigationController?.navigationBar.tintColor = UIColor.secondaryLabel
+        navigationItem.largeTitleDisplayMode = .never
+        view.backgroundColor = UIColor { traits in
+            if traits.userInterfaceStyle == .light {
+                return UIColor.white
+            } else {
+                return UIColor.black
+            }
+        }
+        container.backgroundColor = UIColor { traits in
+            if traits.userInterfaceStyle == .light {
+                return UIColor(red: 241/255, green: 225/255, blue: 232/255, alpha: 1)
+            } else {
+                return UIColor(red: 0.1105830893, green: 0.1105830893, blue: 0.1105830893, alpha: 1)
+            }
+        }
+        
         guard let newsModel = newsModel else { return }
         view.addSubview(scrollView)
-        
-        [container,
-         titleLabel,
+        scrollView.addSubview(container)
+        [titleLabel,
          newsPublicDate,
          newsDescription,
          newsImage,
          newsSource,
-         newsURL].forEach { scrollView.addSubview($0) }
+         newsURL].forEach { container.addSubview($0) }
         
         /// Заполняем модельку.
         titleLabel.text = newsModel.title
@@ -118,10 +137,16 @@ private extension NewsDetailViewController {
         newsPublicDate.text = convertDateFromStringToCorrectString(for: newsModel.publishedAt) ?? "Дата публикации отсутствует"
         installationHighlightSource()
         installationLinkToArticle()
-        uploadImageFromNetwork(image: newsModel.urlToImage) { [weak self] img in
-            guard let img = img, let self = self else { return }
-            self.newsImage.image = img
-            self.newsImage.contentMode = .scaleAspectFill
+        uploadImageFromNetwork(image: newsModel.urlToImage) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let image):
+                self.newsImage.image = image
+                self.newsImage.contentMode = .scaleAspectFill
+                
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
         }
         
         NSLayoutConstraint.activate([
@@ -134,27 +159,28 @@ private extension NewsDetailViewController {
             container.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             container.topAnchor.constraint(equalTo: scrollView.topAnchor),
             container.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            container.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             
             titleLabel.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 8),
-            titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8),
-            titleLabel.topAnchor.constraint(equalTo: container.safeAreaLayoutGuide.topAnchor, constant: 8),
+            titleLabel.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -8),
+            titleLabel.topAnchor.constraint(equalTo: container.safeAreaLayoutGuide.topAnchor, constant: 16),
             
             newsPublicDate.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 8),
-            newsPublicDate.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8),
+            newsPublicDate.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -8),
             newsPublicDate.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
             
             newsImage.leadingAnchor.constraint(equalTo: container.leadingAnchor),
-            newsImage.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            newsImage.trailingAnchor.constraint(equalTo: container.trailingAnchor),
             newsImage.topAnchor.constraint(equalTo: newsPublicDate.bottomAnchor, constant: 8),
             newsImage.heightAnchor.constraint(equalToConstant: 200),
             
             newsDescription.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 8),
-            newsDescription.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8),
+            newsDescription.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -8),
             newsDescription.topAnchor.constraint(equalTo: newsImage.bottomAnchor, constant: 16),
             
             newsSource.topAnchor.constraint(equalTo: newsDescription.bottomAnchor, constant: 16),
             newsSource.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 8),
-            newsSource.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8),
+            newsSource.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -8),
         ])
     }
     
@@ -192,16 +218,16 @@ private extension NewsDetailViewController {
             
             /// Ставим констреинты для ссылки, если ссылка на статью есть.
             newsURL.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 8).isActive = true
-            newsURL.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8).isActive = true
+            newsURL.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -8).isActive = true
             newsURL.topAnchor.constraint(equalTo: newsSource.bottomAnchor, constant: 8).isActive = true
-            newsURL.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -12).isActive = true
+            newsURL.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -16).isActive = true
             
         } else {
             /// Если нету ссылки на источник, то низ будет имя источника.
             newsSource.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -12).isActive = true
         }
     }
-
+    
     // MARK: Actions:
     
     @objc func didLinkTap(_ gestureRecognizer: UITapGestureRecognizer) {
@@ -212,7 +238,7 @@ private extension NewsDetailViewController {
         // TODO: Сделать переход по ссылке.
         print(url)
     }
-
+    
 }
 
 // MARK: - Preview:
@@ -229,7 +255,7 @@ struct PreviewNewsDetailViewController: PreviewProvider {
     
     struct ContainerView: UIViewControllerRepresentable {
         typealias PreviewContext = UIViewControllerRepresentableContext<CurrentPreview>
-
+        
         func makeUIViewController(context: PreviewContext) -> some UIViewController {
             let interactor = NewsInteractor()
             let router = NewsRouter()
@@ -241,14 +267,15 @@ struct PreviewNewsDetailViewController: PreviewProvider {
             )
             let viewController = NewsDetailViewController(testInfoData, presenter: presenter)
             router.viewController = viewController
-            
-            return viewController
+            let navCon = UINavigationController(rootViewController: viewController)
+            navCon.navigationBar.prefersLargeTitles = true
+            return navCon
         }
         
         func updateUIViewController(
             _ uiViewController: CurrentPreview.UIViewControllerType,
             context: PreviewContext) {
-        }
+            }
     }
 }
 
@@ -267,9 +294,9 @@ let testInfoData = NewsDetailModel(
     title: test.title,
     description: test.description,
     url: URL(string: test.url!),
-//    url: nil,
+    //    url: nil,
     urlToImage: URL(string: test.urlToImage!),
     publishedAt: test.publishedAt,
     sourceName: test.source.name
-//    sourceName: nil
+    //    sourceName: nil
 )
